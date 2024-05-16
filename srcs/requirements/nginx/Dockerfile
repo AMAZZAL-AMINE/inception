@@ -1,4 +1,4 @@
-FROM debian:latest
+FROM debian:bookworm
 # php amd fast cgi it should remove later
 RUN apt-get update -y
 
