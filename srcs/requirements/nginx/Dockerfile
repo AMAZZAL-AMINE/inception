@@ -1,6 +1,6 @@
-FROM debian:bookworm
+FROM debian:latest
 # php amd fast cgi it should remove later
-RUN apt-get update
+RUN apt-get update -y
 
 #install what needed
 RUN apt-get install -y nginx openssl 
