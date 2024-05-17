@@ -13,3 +13,7 @@ RUN apt-get update -y && apt-get upgrade \
     && curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
     && chmod +x wp-cli.phar && mv wp-cli.phar /usr/local/bin/wp \
     && wp core download --path=/var/www --allow-root
+
+WORKDIR /var/www
+
+CMD ["php-fpm${PHP_VERSION}", "-F"]

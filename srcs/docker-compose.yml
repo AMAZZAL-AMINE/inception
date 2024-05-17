@@ -1,14 +1,32 @@
 version: '3.7'
 
 services:
-  nginx :
-    build: ./requirements/nginx/
-    container_name: nginx
+  nginx:
+    build:
+      context: ./requirements/nginx/
+      dockerfile: Dockerfile
     ports:
       - "9001:9001"
-  mariadb:
-    build: ./requirements/mariadb/
-    image: mariadb
-    container_name: mariadb
-    env_file:
-      - .env
+    # volumes:
+    #   - ./requirements/nginx:/etc/nginx
+    container_name: nginx
+  # mariadb :
+  #   build:
+  #     context: ./requirements/nginx/
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "3306:3306"
+  #   volumes:
+  #     - ./requirements/mariadb:/etc/mysql
+  #   container_name: mariadb
+  # wordpress:
+  #   build: 
+  #     context: ./requirements/nginx/
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "9000:9000"
+  #   volumes:
+  #     - ./requirements/wordpress:/var/www
+  #   container_name: wordpress
+  #   depends_on:
+  #     - mariadb
