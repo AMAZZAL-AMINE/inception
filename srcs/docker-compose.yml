@@ -5,10 +5,12 @@ services:
     build: ./requirements/nginx/
     ports:
       - "443:443"
+    container_name: nginx
+    image: nginx:13.37
     depends_on:
       - wordpress
     volumes:
-      - wordpress:/var/www
+      - wordpress:/var/www/
 
   wordpress:
     build: ./requirements/wordpress/
@@ -16,13 +18,15 @@ services:
       - "9000:9000"
     env_file:
       - .env
+    container_name: wordpress
+    volumes:
+      - wordpress:/var/www/
     depends_on:
       - mariadb
-    volumes:
-      - wordpress:/var/www
 
   mariadb:
     build: ./requirements/mariadb
+    container_name: mariadb
     env_file:
       - .env
     volumes:

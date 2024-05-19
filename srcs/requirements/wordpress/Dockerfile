@@ -1,9 +1,9 @@
 FROM debian:bookworm
 
-ARG PHP_VERSION=8.2 \
-DB_NAME \
-DB_USER \
-DB_PASSWORD
+ENV PHP_VERSION=8.2 \
+DB_NAME="wprdpress" \
+DB_USER="wordpress" \
+DB_PASSWORD="wordpress"
 
 RUN apt-get update -y && apt-get upgrade \
     && apt-get install  -y curl \
@@ -12,8 +12,14 @@ RUN apt-get update -y && apt-get upgrade \
     php${PHP_VERSION}-mysqli \
     && curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
     && chmod +x wp-cli.phar && mv wp-cli.phar /usr/local/bin/wp \
-    && wp core download --path=/var/www --allow-root
+    && wp core download --path=/var/www --allow-root \
+    && sed -i "s|listen = /run/php/php8.2-fpm.sock|listen = 0.0.0.0:9000|g" /etc/php/8.2/fpm/pool.d/www.conf
 
-WORKDIR /var/www
+
+WORKDIR /var/www/
+# create wp config file (wp-config.php) 1
+# RUN wp config create --dbname=${DB_NAME} --dbuser=${DB_USER} --dbpass=${DB_PASSWORD} --path=/var/www --allow-root
+# set up wp admin user 2
+# # set up wp user 3
 
 CMD ["php-fpm8.2", "-F"]
