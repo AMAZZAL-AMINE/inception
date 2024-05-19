@@ -1,32 +1,43 @@
-version: '3.7'
+version: '3.8'
 
 services:
   nginx:
-    build:
-      context: ./requirements/nginx/
-      dockerfile: Dockerfile
+    build: ./requirements/nginx/
     ports:
-      - "9001:9001"
-    # volumes:
-    #   - ./requirements/nginx:/etc/nginx
-    container_name: nginx
-  # mariadb :
-  #   build:
-  #     context: ./requirements/nginx/
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - "3306:3306"
-  #   volumes:
-  #     - ./requirements/mariadb:/etc/mysql
-  #   container_name: mariadb
-  # wordpress:
-  #   build: 
-  #     context: ./requirements/nginx/
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - "9000:9000"
-  #   volumes:
-  #     - ./requirements/wordpress:/var/www
-  #   container_name: wordpress
-  #   depends_on:
-  #     - mariadb
+      - "443:443"
+    depends_on:
+      - wordpress
+    volumes:
+      - wordpress:/var/www
+
+  wordpress:
+    build: ./requirements/wordpress/
+    ports:
+      - "9000:9000"
+    env_file:
+      - .env
+    depends_on:
+      - mariadb
+    volumes:
+      - wordpress:/var/www
+
+  mariadb:
+    build: ./requirements/mariadb
+    env_file:
+      - .env
+    volumes:
+      - mariadb:/var/lib/mysql
+
+volumes:
+  wordpress:
+    name: wordpress
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/mamazzal/data/wordpress
+  mariadb:
+    name: mariadb
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/mamazzal/data/mariadb

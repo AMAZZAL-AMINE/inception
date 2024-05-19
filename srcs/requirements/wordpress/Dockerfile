@@ -16,4 +16,4 @@ RUN apt-get update -y && apt-get upgrade \
 
 WORKDIR /var/www
 
-CMD ["php-fpm${PHP_VERSION}", "-F"]
+CMD ["php-fpm8.2", "-F"]
