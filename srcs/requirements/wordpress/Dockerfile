@@ -18,8 +18,10 @@ RUN apt-get update -y && apt-get upgrade \
 
 WORKDIR /var/www/
 # create wp config file (wp-config.php) 1
-# RUN wp config create --dbname=${DB_NAME} --dbuser=${DB_USER} --dbpass=${DB_PASSWORD} --path=/var/www --allow-root
 # set up wp admin user 2
-# # set up wp user 3
+
+COPY ./tools/wp_config.sh /var/www/
+
+RUN chmod 777 /var/www/wp_config.sh && bash /var/www/wp_config.sh
 
 CMD ["php-fpm8.2", "-F"]

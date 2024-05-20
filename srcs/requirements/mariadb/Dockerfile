@@ -8,6 +8,6 @@ COPY ./create_db.sh /
 
 RUN chmod +x /create_db.sh
 
-ENTRYPOINT ["/create_db.sh"]
+ENTRYPOINT ["sh", "/create_db.sh"]
 
 CMD ["mariadbd", "--user=mysql", "--bind-address=0.0.0.0"]
