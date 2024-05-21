@@ -1,6 +1,4 @@
 all:
-	sudo rm -fr ../data/*
-	mkdir ../data/wordpress ../data/mariadb
 	docker-compose -f ./srcs/docker-compose.yml up -d --build
 
 build :

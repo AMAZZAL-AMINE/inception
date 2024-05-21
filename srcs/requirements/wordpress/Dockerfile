@@ -22,6 +22,8 @@ WORKDIR /var/www/
 
 COPY ./tools/wp_config.sh /var/www/
 
-RUN chmod 777 /var/www/wp_config.sh && bash /var/www/wp_config.sh
+RUN chmod 777 /var/www/wp_config.sh
+
+ENTRYPOINT ["sh", "/var/www/wp_config.sh"]
 
 CMD ["php-fpm8.2", "-F"]
