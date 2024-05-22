@@ -11,6 +11,8 @@ services:
       - wordpress
     volumes:
       - wordpress:/var/www/
+    networks:
+      - lanternite
 
   wordpress:
     build: ./requirements/wordpress/
@@ -23,7 +25,8 @@ services:
       - wordpress:/var/www/
     depends_on:
       - mariadb
-
+    networks:
+      - lanternite
   mariadb:
     build: ./requirements/mariadb
     container_name: mariadb
@@ -34,6 +37,8 @@ services:
       - .env
     volumes:
       - mariadb:/var/lib/mysql
+    networks:
+      - lanternite
 
 volumes:
   wordpress:
@@ -48,3 +53,7 @@ volumes:
       type: none
       o: bind
       device: /home/mamazzal/data/mariadb
+
+networks:
+  lanternite:
+    driver: bridge
