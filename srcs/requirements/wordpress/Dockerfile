@@ -5,7 +5,7 @@ DB_NAME="wprdpress" \
 DB_USER="wordpress" \
 DB_PASSWORD="wordpress"
 
-RUN apt-get update -y && apt-get upgrade \
+RUN apt-get update \
     && apt-get install  -y curl \
     php${PHP_VERSION} \
     php${PHP_VERSION}-fpm \
