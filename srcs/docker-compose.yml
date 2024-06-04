@@ -16,8 +16,6 @@ services:
 
   wordpress:
     build: ./requirements/wordpress/
-    ports:
-      - "9000:9000"
     env_file:
       - .env
     container_name: wordpress
@@ -31,8 +29,6 @@ services:
     build: ./requirements/mariadb
     container_name: mariadb
     image: mariadb:10.5
-    ports:
-      - "3306:3306"
     env_file:
       - .env
     volumes:

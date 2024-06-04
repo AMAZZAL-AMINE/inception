@@ -16,8 +16,6 @@ RUN apt-get update -y && apt-get upgrade \
     && sed -i "s|listen = /run/php/php8.2-fpm.sock|listen = 0.0.0.0:9000|g" /etc/php/8.2/fpm/pool.d/www.conf
 
 WORKDIR /var/www/
-# create wp config file (wp-config.php) 1
-# set up wp admin user 2
 
 COPY ./tools/wp_config.sh /var/www/
 
