@@ -1,38 +1,0 @@
-LAYERS
-
-In Docker, an image is built up from a series of layers. Each layer represents an instruction in the image's Dockerfile. Each layer except the very last one is read-only.
-
-Here's what happens when you build an image:
-* Docker starts with a base image. This is usually a minimal version of an operating system. 
-* Docker reads the first instruction in your Dockerfile. Let's say it's RUN apt-get update. 
-* Docker creates a new container from the base image, runs apt-get update in it, then takes a snapshot of the container's file system as a new image layer. The intermediate container is then discarded. 
-* Docker reads the next instruction in your Dockerfile, say RUN apt-get install -y curl. It creates a new container from the image it just committed, runs apt-get install -y curl in it, then takes a snapshot of the container's file system as another new image layer. The intermediate container is discarded again. 
-* This process repeats for every instruction in your Dockerfile. Each time, Docker creates a new container, runs the command in it, commits the changes to a new image layer, and removes the intermediate container. 
-* The final result is a new image that consists of the base image plus all the changes committed in each step. This new image is what you use to create new containers. 
-This layered approach is one of the things that makes Docker so powerful. Layers are cached and can be shared between images, which saves disk space and makes images faster to build if they reuse the same layers.
-
-
-MORE UNDERSTAND :
-
-Each instruction in the Dockerfile creates a new layer in the image by:
-1. Starting a new temporary container from the image that was created by the previous instruction.
-2. Running the command in this temporary container.
-3. Saving the state of the container's file system as a new layer in the image.
-4. Discarding the temporary container.
-This process repeats for each instruction in the Dockerfile. The result is an image that consists of multiple layers - one for each instruction in the Dockerfile. When you start a new container from this image, Docker assembles the file system from these layers.
-So in your example, the FROM debian instruction creates the first layer, the RUN apt-get update instruction creates the second layer, and so on. Each layer includes the changes to the file system that were made by that instruction.
-
-
-NAMESPACES
-* What are they?: Namespaces are a feature of the Linux kernel that provide isolation for various system resources. They allow multiple processes to have their own "view" of the system, making it appear as though each process has its own isolated instance of certain resources.
-* Types of namespaces: There are several types of namespaces, each responsible for isolating a specific aspect of the system:
-    * PID namespace: Isolates the process ID number space, so that processes within a namespace cannot see processes outside of it.
-    * Network namespace: Provides an isolated network stack, including network interfaces, routing tables, and firewall rules.
-    * Mount namespace: Ensures that each namespace has its own mount points, so that processes within a namespace can have a different view of the filesystem.
-    * UTS namespace: Isolates the hostname and domain name, allowing each namespace to have its own.
-    * IPC namespace: Isolates inter-process communication resources such as System V IPC and POSIX message queues.
-    * User namespace: Provides a mapping between user and group IDs inside the namespace and those outside the namespace, allowing processes to have different privileges inside and outside the namespace.
-Control Groups (cgroups):
-    * What are they?: Control groups, often abbreviated as cgroups, are a Linux kernel feature that allow the allocation of resources (such as CPU, memory, disk I/O, and network bandwidth) among a set of processes. Cgroups provide mechanisms for limiting, prioritizing, and monitoring resource usage.
-    * Resource management: Cgroups allow administrators to control the amount of resources (CPU, memory, etc.) that a group of processes can use, ensuring fair resource allocation and preventing any single process or group of processes from monopolizing resources.
-    * Use in containers: In the context of containerization, cgroups are used to enforce resource constraints on containers. Docker, for example, leverages cgroups to limit the CPU, memory, and other resources that containers can consume. This ensures that containers are properly isolated from each other and from the host system, and that they don't degrade overall system performance.
